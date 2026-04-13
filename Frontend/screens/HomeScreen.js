@@ -1,13 +1,13 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 
 export default function HomeScreen({ navigation }) {
   return (
-    <Image
-  source={require('../assets/NTlogo.png')}
-  style={styles.logo}
-/>
     <View style={styles.container}>
+      <Image
+        source={require('../assets/NTlogo.png')}
+        style={styles.logo}
+      />
+
       <Text style={styles.title}>NutriLabel</Text>
       <Text style={styles.subtitle}>
         Check packaged foods against dietary restrictions
@@ -22,9 +22,7 @@ export default function HomeScreen({ navigation }) {
 
       <Pressable
         style={styles.secondaryButton}
-        onPress={() =>
-          navigation.navigate('ManualInput', { selectedProfiles: [] })
-        }
+        onPress={() => navigation.navigate('ManualInput', { selectedProfiles: [] })}
       >
         <Text style={styles.secondaryButtonText}>Go Straight to Manual Input</Text>
       </Pressable>
@@ -39,6 +37,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    resizeMode: 'contain',
+    marginBottom: 20,
   },
   title: {
     fontSize: 32,
@@ -79,10 +83,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  logo: {
-  width: 120,
-  height: 120,
-  resizeMode: 'contain',
-  marginBottom: 20,
-},
 });
