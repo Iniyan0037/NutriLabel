@@ -1,7 +1,12 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { Image } from 'react-native';
 
 export default function HomeScreen({ navigation }) {
   return (
+    <Image
+  source={require('../assets/NTlogo.png')}
+  style={styles.logo}
+/>
     <View style={styles.container}>
       <Text style={styles.title}>NutriLabel</Text>
       <Text style={styles.subtitle}>
@@ -74,4 +79,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  logo: {
+  width: 120,
+  height: 120,
+  resizeMode: 'contain',
+  marginBottom: 20,
+},
 });
