@@ -1,3 +1,4 @@
+import React from 'react';
 import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 
 export default function HomeScreen({ navigation }) {
@@ -39,12 +40,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-  width: 200,
-  height: 200,
-  resizeMode: 'contain',
-  marginBottom: 20,
-  backgroundColor: '#eee',
-},
+    width: 180,
+    height: 180,
+    resizeMode: 'contain',
+    marginBottom: 20,
+    backgroundColor: '#eeeeee',
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
