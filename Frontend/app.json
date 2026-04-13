@@ -1,5 +1,6 @@
 {
   "expo": {
+    "icon": "./assets/NTlogo.png"
     "name": "nutrilabel-frontend",
     "slug": "nutrilabel-frontend",
     "version": "1.0.0",
