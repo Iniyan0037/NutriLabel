@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 
 const PROFILE_OPTIONS = [
@@ -16,12 +16,18 @@ export default function ProfileScreen({ navigation }) {
   const [selectedProfiles, setSelectedProfiles] = useState([]);
 
   const toggleProfile = (profile) => {
-    if (selectedProfiles.includes(profile)) {
-      setSelectedProfiles(selectedProfiles.filter((item) => item !== profile));
-    } else {
-      setSelectedProfiles([...selectedProfiles, profile]);
-    }
+    setSelectedProfiles((current) =>
+      current.includes(profile)
+        ? current.filter((item) => item !== profile)
+        : [...current, profile]
+    );
   };
+
+  const selectedSummary = useMemo(() => {
+    return selectedProfiles.length > 0
+      ? selectedProfiles.join(', ')
+      : 'None selected yet';
+  }, [selectedProfiles]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -37,32 +43,25 @@ export default function ProfileScreen({ navigation }) {
           return (
             <Pressable
               key={profile}
-              style={[
-                styles.optionCard,
-                isSelected && styles.optionCardSelected,
-              ]}
+              style={[styles.optionCard, isSelected && styles.optionCardSelected]}
               onPress={() => toggleProfile(profile)}
             >
-              <Text
-                style={[
-                  styles.optionText,
-                  isSelected && styles.optionTextSelected,
-                ]}
-              >
-                {profile}
-              </Text>
+              <View style={styles.optionRow}>
+                <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
+                  {profile}
+                </Text>
+                <Text style={[styles.optionState, isSelected && styles.optionStateSelected]}>
+                  {isSelected ? 'Selected' : 'Tap to select'}
+                </Text>
+              </View>
             </Pressable>
           );
         })}
       </View>
 
       <View style={styles.summaryBox}>
-        <Text style={styles.summaryTitle}>Selected Profiles:</Text>
-        <Text style={styles.summaryText}>
-          {selectedProfiles.length > 0
-            ? selectedProfiles.join(', ')
-            : 'None selected yet'}
-        </Text>
+        <Text style={styles.summaryTitle}>Selected Profiles</Text>
+        <Text style={styles.summaryText}>{selectedSummary}</Text>
       </View>
 
       <Pressable
@@ -116,11 +115,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#222',
     borderColor: '#222',
   },
+  optionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   optionText: {
     fontSize: 16,
     textTransform: 'capitalize',
   },
   optionTextSelected: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+  optionState: {
+    fontSize: 12,
+    color: '#666',
+  },
+  optionStateSelected: {
     color: '#fff',
     fontWeight: '600',
   },
@@ -137,6 +149,7 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     fontSize: 15,
+    lineHeight: 22,
   },
   primaryButton: {
     marginTop: 24,
