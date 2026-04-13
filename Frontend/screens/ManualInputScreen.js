@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import {
-  View, Text, StyleSheet, TextInput, Pressable, ScrollView, ActivityIndicator, Alert,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { analyzeIngredients } from '../services/api';
 
@@ -18,12 +25,12 @@ export default function ManualInputScreen({ route, navigation }) {
     try {
       setLoading(true);
 
-      const result = await analyzeIngredients(ingredientText, selectedProfiles);
+      const result = await analyzeIngredients(ingredientText.trim(), selectedProfiles);
 
       navigation.navigate('Results', {
         apiResult: result,
         selectedProfiles,
-        ingredientText,
+        ingredientText: ingredientText.trim(),
       });
     } catch (error) {
       Alert.alert(
@@ -45,23 +52,29 @@ export default function ManualInputScreen({ route, navigation }) {
       <View style={styles.summaryBox}>
         <Text style={styles.summaryTitle}>Selected Profiles:</Text>
         <Text style={styles.summaryText}>
-          {selectedProfiles.length > 0 ? selectedProfiles.join(', ') : 'No profiles selected'}
+          {selectedProfiles.length > 0
+            ? selectedProfiles.join(', ')
+            : 'No profiles selected'}
         </Text>
       </View>
 
       <TextInput
         style={styles.input}
         multiline
-        placeholder="Example: Wheat flour, sugar, milk, E471"
+        placeholder="Example: Wheat flour, sugar, milk solids, E471"
         value={ingredientText}
         onChangeText={setIngredientText}
         textAlignVertical="top"
       />
 
+      <Text style={styles.helperText}>
+        Separate ingredients with commas for best results.
+      </Text>
+
       <Pressable
-        style={[styles.primaryButton, !ingredientText.trim() && styles.disabledButton]}
+        style={[styles.primaryButton, (!ingredientText.trim() || loading) && styles.disabledButton]}
         onPress={handleAnalyze}
-        disabled={loading || !ingredientText.trim()}
+        disabled={!ingredientText.trim() || loading}
       >
         {loading ? (
           <ActivityIndicator color="#fff" />
@@ -74,14 +87,39 @@ export default function ManualInputScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, backgroundColor: '#fff', flexGrow: 1 },
-  title: { fontSize: 28, fontWeight: 'bold', marginTop: 20, marginBottom: 8, textAlign: 'center' },
-  subtitle: { fontSize: 16, textAlign: 'center', marginBottom: 24, color: '#444' },
-
-  summaryBox: { marginBottom: 20, padding: 16, borderRadius: 12, backgroundColor: '#f2f2f2' },
-  summaryTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 8 },
-  summaryText: { fontSize: 15 },
-
+  container: {
+    padding: 20,
+    backgroundColor: '#fff',
+    flexGrow: 1,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 24,
+    color: '#444',
+  },
+  summaryBox: {
+    marginBottom: 20,
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: '#f2f2f2',
+  },
+  summaryTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  summaryText: {
+    fontSize: 15,
+    lineHeight: 22,
+  },
   input: {
     minHeight: 180,
     borderWidth: 1,
@@ -89,24 +127,26 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
-    backgroundColor: '#fafafa'
+    backgroundColor: '#fafafa',
   },
-
+  helperText: {
+    marginTop: 10,
+    fontSize: 13,
+    color: '#666',
+  },
   primaryButton: {
     marginTop: 24,
     backgroundColor: '#222',
     paddingVertical: 16,
     borderRadius: 12,
-    alignItems: 'center'
+    alignItems: 'center',
   },
-
   disabledButton: {
-    backgroundColor: '#aaa'
+    backgroundColor: '#9ca3af',
   },
-
   primaryButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: '600',
   },
 });
