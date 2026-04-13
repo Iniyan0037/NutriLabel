@@ -51,11 +51,20 @@ def analyze():
 
 
 @app.route("/product/<barcode>", methods=["GET"])
+@app.route("/product/<barcode>", methods=["GET"])
 def get_product(barcode):
     selected_profiles = request.args.getlist("profile")
 
+    if not isinstance(barcode, str) or not barcode.strip():
+        return jsonify({"error": "barcode cannot be empty"}), 400
+
+    normalized_barcode = barcode.strip()
+
+    if not normalized_barcode.isdigit():
+        return jsonify({"error": "barcode must contain digits only"}), 400
+
     off_url = (
-        f"https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+        f"https://world.openfoodfacts.org/api/v2/product/{normalized_barcode}.json"
         f"?fields=product_name,product_name_en,ingredients_text,ingredients_text_en,brands,allergens_tags,additives_tags"
     )
 
@@ -92,7 +101,7 @@ def get_product(barcode):
     )
 
     return jsonify({
-        "barcode": barcode,
+        "barcode": normalized_barcode,
         "product_name": product_name,
         "brands": brands,
         "ingredient_text": ingredient_text,
