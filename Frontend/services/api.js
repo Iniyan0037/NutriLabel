@@ -1,6 +1,7 @@
 const BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://127.0.0.1:5000';
+
 if (!BASE_URL) {
-  throw new Error("EXPO_PUBLIC_API_BASE_URL is not set.");
+  throw new Error('EXPO_PUBLIC_API_BASE_URL is not set.');
 }
 
 export async function analyzeIngredients(ingredientText, selectedProfiles) {
@@ -28,6 +29,12 @@ export async function fetchProductByBarcode(barcode, selectedProfiles) {
   const response = await fetch(`${BASE_URL}/product/${barcode}?${params.toString()}`);
 
   if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Failed to fetch product by barcode: ${text}`);
+  }
+
+  return response.json();
+}
     const text = await response.text();
     throw new Error(`Failed to fetch product by barcode: ${text}`);
   }
