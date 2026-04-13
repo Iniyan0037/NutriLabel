@@ -9,7 +9,7 @@ export default function HomeScreen({ navigation }) {
         style={styles.logo}
       />
 
-      <Text style={styles.title}>NutriLabel</Text>
+      <Text style={styles.title}>NutriLabel TEST SVREEN</Text>
       <Text style={styles.subtitle}>
         Check packaged foods against dietary restrictions
       </Text>
