@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -25,7 +25,10 @@ export default function ManualInputScreen({ route, navigation }) {
     try {
       setLoading(true);
 
-      const result = await analyzeIngredients(ingredientText.trim(), selectedProfiles);
+      const result = await analyzeIngredients(
+        ingredientText.trim(),
+        selectedProfiles
+      );
 
       navigation.navigate('Results', {
         apiResult: result,
@@ -72,7 +75,10 @@ export default function ManualInputScreen({ route, navigation }) {
       </Text>
 
       <Pressable
-        style={[styles.primaryButton, (!ingredientText.trim() || loading) && styles.disabledButton]}
+        style={[
+          styles.primaryButton,
+          (!ingredientText.trim() || loading) && styles.disabledButton,
+        ]}
         onPress={handleAnalyze}
         disabled={!ingredientText.trim() || loading}
       >
