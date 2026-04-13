@@ -8,12 +8,11 @@ from analyzer import analyze_ingredients
 
 app = Flask(__name__)
 
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*")
-
-if ALLOWED_ORIGINS == "*":
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
+if allowed_origins == "*":
     CORS(app)
 else:
-    origins = [origin.strip() for origin in ALLOWED_ORIGINS.split(",") if origin.strip()]
+    origins = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
     CORS(app, resources={r"/*": {"origins": origins}})
 
 
@@ -38,6 +37,9 @@ def analyze():
 
     if not isinstance(selected_profiles, list):
         return jsonify({"error": "selected_profiles must be a list"}), 400
+
+    if not ingredient_text.strip():
+        return jsonify({"error": "ingredient_text cannot be empty"}), 400
 
     result = analyze_ingredients(
         ingredient_text=ingredient_text,
