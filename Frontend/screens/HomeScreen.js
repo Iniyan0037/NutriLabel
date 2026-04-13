@@ -39,11 +39,12 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    width: 120,
-    height: 120,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  },
+  width: 200,
+  height: 200,
+  resizeMode: 'contain',
+  marginBottom: 20,
+  backgroundColor: '#eee',
+},
   title: {
     fontSize: 32,
     fontWeight: 'bold',
